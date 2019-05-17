@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Animations</title>
+	<script type="text/javascript" src="paper-full.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/howler/1.1.28/howler.js"></script>
+	<link rel="stylesheet" type="text/css" href="animations.css">
+	<script type="text/paperscript" canvas="myCanvas">
+
+	var keyData = {
+			1: {
+				sound: new Howl({
+		  		urls: ['sounds/bubbles.mp3']
+				}),
+			},
+			2: {
+				sound: new Howl({
+		  		urls: ['sounds/clay.mp3']
+				}),
+			},
+			3: {
+				sound: new Howl({
+		  		urls: ['sounds/confetti.mp3']
+				}),
+			},
+			4: {
+				sound: new Howl({
+		  		urls: ['sounds/splits.mp3']
+				}),
+			},
+				5: {
+				sound: new Howl({
+		  		urls: ['sounds/flash-2.mp3']
+				}),
+			},
+			6: {
+				sound: new Howl({
+		  		urls: ['sounds/flash-1.mp3']
+				}),
+			},
+			7: {
+				sound: new Howl({
+		  		urls: ['sounds/dotted-spiral.mp3']
+				}),
+			},
+			8: {
+				sound: new Howl({
+		  		urls: ['sounds/squiggle.mp3']
+				}),
+			},
+			9: {
+				sound: new Howl({
+					urls: ['sounds/glimmer.mp3']
+				}),
+			}
+		}
+
+	var square = []
+	var square2 = []
+	var circles = []
+	var circles2 = []
+	var circles3 = []
+	var circles4 = []
+	var circles5 = []
+	var circles6 = []
+	var circles7 = []
+	var destination = []
+	var destination2 = []
+	var destination3 = []
+	var vector = []
+	var vector2 = []
+	var vector3 = []
+	var triangle = []
+	var hex = []
+	var face = []
+	var area = []
+	var flag = true
+	var flag2 = true
+
+
+	function getRandomColor()
+	{
+	  var letters = '0123456789ABCDEF';
+	  var color = '#';
+	  for (var i = 0; i < 6; i++) 
+	  {
+	    color += letters[Math.floor(Math.random() * 16)];
+	  }
+	  return color;
+	}
+
+	function onKeyDown(event)
+	{	
+
+		var center = new Point(view.center);
+
+		if(event.key == '1')
+		{
+				var randomSide = Math.floor(Math.random()*4)+3
+				var sq = new Path.RegularPolygon(new Point.random()*view.size,randomSide,100)
+				sq.fillColor = 'grey'
+				square.push(sq);
+				keyData[event.key].sound.play();
+		}
+
+			
+
+		if(event.key == '2')
+		{
+			
+			for(var i=0;i<3;i++)
+			{	
+
+				radius = 25;
+				var randomSide = Math.floor(Math.random()*4)+3
+				var newCircle2 = new Path.RegularPolygon(center,randomSide,radius)
+				newCircle2.fillColor = getRandomColor();
+				var dest = Point.random() * view.size;
+				circles2.push(newCircle2);
+				destination.push(dest)
+				keyData[event.key].sound.play();
+			}	
+		}
+
+		if(event.key == '3')
+		{
+			
+			radius = 100;
+			var newCircle3 = new Path.Circle(center,radius)
+			newCircle3.fillColor = getRandomColor();
+			var dest2 = Point.random() * view.size;
+			circles3.push(newCircle3);
+			destination2.push(dest2)
+			keyData[event.key].sound.play();
+			
+		}
+
+		if(event.key == '4')
+		{
+			var radius2 = 40;
+			var sides2 = 3;
+			var tri = new Path.RegularPolygon(center, sides2, radius2);
+			var c1 = new Path.Circle(center.x, center.y-radius2,(radius2/28))
+			var c2 = new Path.Circle(center.x-(radius2*0.866), center.y+(radius2/2),(radius2/28))
+			var c3 = new Path.Circle(center.x+(radius2*0.866), center.y+(radius2/2),(radius2/28))
+			tri.strokeColor = 'white';
+			c1.fillColor = 'red';
+			c2.fillColor = 'red';
+			c3.fillColor = 'red';
+			tri.rotate(45,center);
+			c1.rotate(45,center);
+			c2.rotate(45,center);
+			c3.rotate(45,center);
+			circles4.push(c1);
+			circles4.push(c2);
+			circles4.push(c3);	
+			triangle.push(tri);
+			keyData[event.key].sound.play();
+		}
+
+		if(event.key == '5')
+		{
+			var c1 = new Path.Circle(new Point(view.center.x,0),15)
+			var c2 = new Path.Circle(new Point(view.size.width,view.size.height),15)
+			var c3 = new Path.Circle(new Point(0,view.size.height),15)
+			c1.fillColor = "#FC4445" 
+			c2.fillColor = "#EDF5E1"
+			c3.fillColor = "#D79922"
+			circles5.push(c1);
+			circles5.push(c2);
+			circles5.push(c3);
+			keyData[event.key].sound.play();	
+		}
+
+
+		if(event.key == '6')
+		{
+			var hex1 = new Path.RegularPolygon(view.center,6,250)
+			hex1.fillColor = getRandomColor();
+			hex.push(hex1);
+			area.push(hex1.area)
+		
+			keyData[event.key].sound.play();
+		}
+
+		if(event.key == '7')
+		{
+			var rp1 = [new Point(0,0),new Point(view.bounds.width,view.bounds.height)]
+			var rp2 = [new Point(view.bounds.width,0),new Point(0,view.bounds.height)]
+			var pt = Math.floor(Math.random()*2) === 0 ? rp1 : rp2 
+			var val = Math.floor(Math.random()*2)
+
+
+			var c1 = new Path.Circle(pt[0],10)
+			c1.fillColor = getRandomColor()
+			var c2 = new Path.Circle(pt[1],10)
+			c2.fillColor = 'black'
+
+			circles6.push(c1);
+			circles6.push(c2);
+
+			keyData[event.key].sound.play();
+		}
+
+		if(event.key == '8')
+		{
+			for(var i=0;i<4;i++)
+			{
+				var randomPoint = new Point.random()*view.size;
+				var newCircle = new Path.Circle(randomPoint, 500)
+				newCircle.fillColor = 'red';
+				circles7.push(newCircle);
+				var sq2 = new Path.RegularPolygon(randomPoint,4,500)	
+				sq2.fillColor = 'black';
+				square2.push(sq2);
+
+				keyData[event.key].sound.play();
+			}
+		}
+
+		if(event.key == '9')
+		{
+			var destinationA = [new Point(view.center.x-150,view.center.y-250),
+						new Point(view.center.x-100,view.center.y-225),
+						new Point(view.center.x-125,view.center.y-225)]
+
+			var destinationB = [new Point(view.center.x+150,view.center.y-250),
+								new Point(view.center.x+200,view.center.y-225),
+								new Point(view.center.x+175,view.center.y-225)]
+
+			var destinationC = new Point(view.center.x+30,view.center.y-150)
+
+			var rp1 = new Point.random()*view.size;
+			var rp2 = new Point.random()*view.size;
+			var rp3 = new Point.random()*view.size;
+			var rp4 = new Point.random()*view.size;
+			var rp5 = new Point.random()*view.size;
+			var rp6 = new Point.random()*view.size;
+			var rp7 = new Point.random()*view.size;
+
+			var color1 = getRandomColor();
+			var color2 = getRandomColor();
+
+			var r1 = new Path.Rectangle(new Point(rp1.x,rp1.y),new Point(rp1.x+200,rp1.y+15))
+			r1.fillColor = color1;
+
+			var r2 = new Path.Rectangle(new Point(rp2.x,rp2.y),new Point(rp2.x+200,rp2.y+15))
+			r2.fillColor = color2
+
+			var r3 = new Path.Rectangle(new Point(rp3.x,rp3.y),new Point(rp3.x+100,rp3.y+40))
+			r3.fillColor = color1
+
+			var r4 = new Path.Rectangle(new Point(rp4.x,rp4.y),new Point(rp4.x+100,rp4.y+40))
+			r4.fillColor = color2
+
+			var arc = new Path.Arc({from: [rp5.x,rp5.y],through: [rp5.x+50,rp5.y+25],to: [rp5.x+100,rp5.y]})
+			arc.fillColor = getRandomColor()
+			arc.strokeWidth = 10
+
+			var c1 = new Path.Circle(rp6,15)
+			c1.fillColor = 'black'
+
+			var c2 = new Path.Circle(rp7,15)
+			c2.fillColor = 'black'
+
+			destination3.push(destinationA[0])
+			destination3.push(destinationB[0])
+			destination3.push(destinationA[1])
+			destination3.push(destinationB[1])
+			destination3.push(destinationA[2])
+			destination3.push(destinationB[2])
+			destination3.push(destinationC)
+
+			face.push(r1)
+			face.push(r2)
+			face.push(r3)
+			face.push(r4)
+			face.push(c1)
+			face.push(c2)
+			face.push(arc)
+
+			keyData[event.key].sound.play();
+
+		}
+
+	}
+					
+	function onFrame(event)
+	{
+		
+		for(var i=0 ; i<square.length;i++)
+		{
+			square[i].scale(0.9)
+			if(square[i].area < 1)
+			{
+				square[i].remove();
+				square.splice(i,1)
+				i--;
+			}
+		}
+
+		for(var i = 0; i < circles2.length; i++)
+		{
+			vector[i] = destination[i] - circles2[i].position
+			circles2[i].position += vector[i] / 5;
+				
+			if(vector[i].length < 3)
+			{
+				circles2[i].scale(0.9);
+
+				if(circles2[i].area < 0.5)
+				{
+					circles2[i].remove(); // remove the circle from the canvas
+      				circles2.splice(i, 1); // remove the circle from the array
+      				destination.splice(i,1);
+      				i--;
+				}
+			}	
+		}
+
+		for(var i = 0; i < circles3.length; i++)
+		{	
+
+			vector2[i] = destination2[i] - circles3[i].position
+			circles3[i].position += vector2[i] / 5;	
+
+			if(vector2[i].length < 3)
+			{
+				circles3[i].scale(0.9);
+
+				if(circles3[i].area < 0.5)
+				{
+					circles3[i].remove(); // remove the circle from the canvas
+      				circles3.splice(i, 1); // remove the circle from the array
+      				destination2.splice(i,1);
+      				i--;
+				}
+			}
+
+		}
+
+		for(var i = 0; i < circles4.length; i++)
+		{
+			circles4[i].scale(1.1,view.center);
+			if(circles4[i].area > 2000)
+				{
+					circles4[i].remove(); // remove the circle from the canvas
+      				circles4.splice(i, 1); // remove the circle from the array
+      				i--; // decrement i so that the loop doesn't skip a circle because of .splice()
+				}
+		}
+
+		for(var j = 0; j < triangle.length; j++)
+		{
+			triangle[j].scale(1.1,view.center);
+			if(triangle[j].area > 1000000)
+				{
+					triangle[j].remove(); // remove the circle from the canvas
+      				triangle.splice(j, 1); // remove the circle from the array
+      				j--; // decrement i so that the loop doesn't skip a circle because of .splice()
+				}
+			
+		}
+
+
+		for(var i = 0; i < circles5.length; i++)
+		{
+			vector[i] = view.center - circles5[i].position
+			circles5[i].position += vector[i]/10
+			circles5[i].rotate(2,view.center)
+			if(vector[i].length < 2)
+			{
+      			circles5[i].remove(); // remove the circle from the canvas
+      			circles5.splice(i, 1); // remove the circle from the array
+      			i--; // decrement i so that the loop doesn't skip a circle because of .splice()
+    		}
+		}
+
+		for(var i = 0; i < hex.length; i++)
+		{
+
+				hex[i].scale(1.01)
+				hex[i].rotate(-2)
+
+			if(Math.abs(hex[i].area/area[i]) > 1.5)
+			{
+				hex[i].remove()
+				hex.splice(i,1)
+				i--
+			}
+
+			
+			
+		}
+
+		for(var i = 0; i < circles6.length-1; i++)
+		{	
+			
+			circles6[i].scale(1.1);	
+
+			if(circles6[i].area/4>view.bounds.width*view.bounds.height)
+			{
+				circles6[i+1].scale(1.1);
+				
+				if(circles6[i+1].area/4>view.bounds.width*view.bounds.height*2)
+				{
+					circles6[i].remove()
+				 	circles6[i+1].remove()
+					circles6.splice(i,2)
+					i--
+					
+				}
+			}
+		}
+
+		for(var i = 0; i < circles7.length; i++)
+			{
+				circles7[i].fillColor.hue += 1;
+				circles7[i].scale(.9);
+				square2[i].rotate(13)
+				square2[i].scale(0.9)
+				if(circles7[i].area < 0.1 && square2[i].area < 1)
+				{
+					circles7[i].remove(); // remove the circle from the canvas
+					square2[i].remove();
+      				circles7.splice(i, 1); // remove the circle from the array
+      				square2.splice(i, 1);
+      				i--; // decrement i so that the loop doesn't skip a circle because of .splice()
+				}
+			}
+
+		for(var i = 0 ; i < face.length ; i++)
+		{
+			vector3[i] = face[i].position - destination3[i];
+			face[i].position -= vector3[i]/10;
+
+			if(vector3[i].length < 1)
+			{
+				face[i].remove();
+				face.splice(i,1)
+				destination3.splice(i,1)
+				i--
+			}
+		}	
+	}
+
+	</script>
+</head>
+<body>
+ 
+<canvas id="myCanvas" resize></canvas>
+</body>
+</html>

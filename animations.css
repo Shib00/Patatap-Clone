@@ -1,0 +1,39 @@
+html,body{
+	width: 100%;
+	height: 100%;
+	margin: 0;
+}
+
+#myCanvas{
+	background: black;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+@keyframes blink {
+  50% {
+    background: #000;
+    background-size: 75px 150px;
+  }
+}
+
+  @-webkit-keyframes blink {
+  50% {
+    background: #000;
+    background-size: 75px 150px;
+  }
+}
+
+@-moz-keyframes blink {
+  50% {
+    background: #000;
+    background-size: 75px 150px;
+  }
+}
+
+.laser {
+  animation: blink 0.112s 3;
+  -webkit-animation: blink 0.112s 3;
+  -moz-animation: blink 0.112s 3;
+}
